@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>HealthAI — Healthcare Education Assistant</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f8fa;
+    color: #24343b;
+}
+
+.header {
+    background: #167d8d;
+    color: white;
+    text-align: center;
+    padding: 28px 15px;
+}
+
+.header h1 {
+    margin: 0 0 6px;
+    font-size: 28px;
+}
+
+.header p {
+    margin: 0;
+    font-size: 13px;
+}
+
+.container {
+    max-width: 760px;
+    margin: 20px auto;
+    padding: 0 16px;
+}
+
+.card {
+    background: white;
+    border: 1px solid #d8e5e8;
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 16px;
+    box-shadow: 0 3px 12px rgba(20, 60, 70, 0.06);
+}
+
+label {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 12px;
+    border: 1px solid #d8e5e8;
+    border-radius: 10px;
+    resize: vertical;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: #167d8d;
+}
+
+.example {
+    color: #60747c;
+    font-size: 11px;
+    margin-top: 6px;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+button {
+    padding: 11px;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.primary {
+    background: #167d8d;
+    color: white;
+    border: none;
+}
+
+.primary:hover {
+    background: #126673;
+}
+
+.secondary {
+    background: white;
+    color: #24343b;
+    border: 1px solid #d8e5e8;
+}
+
+.secondary:hover {
+    background: #eef5f6;
+}
+
+.clear {
+    width: 100%;
+    margin-top: 8px;
+}
+
+.result h2 {
+    font-size: 18px;
+    margin-top: 0;
+}
+
+.small {
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.match {
+    border: 1px solid #d8e5e8;
+    border-radius: 11px;
+    padding: 13px;
+    margin: 10px 0;
+}
+
+.match h3 {
+    margin: 0 0 6px;
+    font-size: 16px;
+}
+
+.meta {
+    color: #60747c;
+    font-size: 12px;
+}
+
+.bar {
+    height: 7px;
+    background: #e7eff1;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 8px 0;
+}
+
+.fill {
+    height: 100%;
+    background: #167d8d;
+}
+
+.notice {
+    background: #fff8e8;
+    border-left: 4px solid #d99b2b;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+.footer {
+    text-align: center;
+    color: #60747c;
+    font-size: 11px;
+    padding-bottom: 20px;
+}
+
+@media (max-width: 600px) {
+    .buttons {
+        grid-template-columns: 1fr;
+    }
+
+    .header h1 {
+        font-size: 24px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+    <h1>🩺 HealthAI</h1>
+    <p>Healthcare Education Assistant</p>
+</header>
+
+<main class="container">
+
+<section class="card">
+
+<label for="symptoms">
+    Enter your symptoms
+</label>
+
+<textarea
+    id="symptoms"
+    placeholder="Example: I have a headache and fever">
+</textarea>
+
+<div class="example">
+    You can describe your symptoms in a natural sentence.
+</div>
+
+<div class="buttons">
+
+<button class="primary" onclick="analyzeSymptoms()">
+    Analyze Symptoms
+</button>
+
+<button class="secondary" onclick="showTips()">
+    Health Tips
+</button>
+
+<button class="secondary" onclick="showCategories()">
+    Categories
+</button>
+
+</div>
+
+<button class="secondary clear" onclick="clearApp()">
+    Clear
+</button>
+
+</section>
+
+
+<section class="card result" id="result">
+
+<h2>Welcome to HealthAI</h2>
+
+<p class="small">
+    Enter one or more symptoms above to explore
+    educational health information.
+</p>
+
+</section>
+
+<div class="footer">
+    Educational prototype • Not medical advice
+</div>
+
+</main>
+
+
+<script>
+
+const healthData = {
+
+"Common Flu": {
+category: "Infectious",
+symptoms: [
+"fever",
+"cough",
+"headache",
+"body aches",
+"fatigue",
+"sore throat",
+"chills",
+"weakness"
+],
+info:
+"A viral illness that commonly causes fever, cough, tiredness and body aches.",
+tip:
+"Rest, stay hydrated, and monitor your symptoms."
+},
+
+"COVID-19": {
+category: "Infectious",
+symptoms: [
+"fever",
+"cough",
+"headache",
+"fatigue",
+"sore throat",
+"loss of taste",
+"loss of smell",
+"shortness of breath"
+],
+info:
+"A respiratory infection that can cause fever, cough and fatigue.",
+tip:
+"Rest, maintain fluids, and seek professional help if breathing becomes difficult."
+},
+
+"Malaria": {
+category: "Infectious",
+symptoms: [
+"fever",
+"chills",
+"headache",
+"sweating",
+"body aches",
+"nausea",
+"fatigue",
+"weakness"
+],
+info:
+"A mosquito-borne disease that commonly causes fever and chills.",
+tip:
+"Suspected malaria should be evaluated by a healthcare professional."
+},
+
+"Common Cold": {
+category: "Respiratory",
+symptoms: [
+"cough",
+"sneezing",
+"runny nose",
+"sore throat",
+"headache",
+"congestion"
+],
+info:
+"A common respiratory illness that can cause sneezing, congestion and coughing.",
+tip:
+"Rest, drink fluids, and avoid
