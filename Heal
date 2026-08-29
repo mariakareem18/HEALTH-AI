@@ -1,0 +1,802 @@
+import tkinter as tk
+import re
+
+# ==========================================
+# HEALTHAI 2.0
+# Educational healthcare prototype
+# ==========================================
+
+health_data = {
+
+    "Common Flu": {
+        "category": "Infectious",
+        "symptoms": [
+            "fever", "cough", "headache", "body aches",
+            "fatigue", "sore throat", "chills", "weakness"
+        ],
+        "info": "A viral illness that commonly causes fever, cough, tiredness and body aches.",
+        "tip": "Rest, stay hydrated, and monitor your symptoms."
+    },
+
+    "COVID-19": {
+        "category": "Infectious",
+        "symptoms": [
+            "fever", "cough", "headache", "fatigue",
+            "sore throat", "loss of taste", "loss of smell",
+            "shortness of breath"
+        ],
+        "info": "A respiratory infection that can cause fever, cough, fatigue and other symptoms.",
+        "tip": "Rest, maintain fluids, and seek professional help if breathing becomes difficult."
+    },
+
+    "Malaria": {
+        "category": "Infectious",
+        "symptoms": [
+            "fever", "chills", "headache", "sweating",
+            "body aches", "nausea", "fatigue", "weakness"
+        ],
+        "info": "A mosquito-borne disease that commonly causes fever and chills.",
+        "tip": "Suspected malaria should be evaluated by a healthcare professional."
+    },
+
+    "Common Cold": {
+        "category": "Respiratory",
+        "symptoms": [
+            "cough", "sneezing", "runny nose",
+            "sore throat", "headache", "congestion"
+        ],
+        "info": "A common respiratory illness that can cause sneezing, congestion and coughing.",
+        "tip": "Rest, drink fluids, and avoid known irritants."
+    },
+
+    "Bronchitis": {
+        "category": "Respiratory",
+        "symptoms": [
+            "cough", "fatigue", "chest discomfort",
+            "mild fever", "shortness of breath", "wheezing"
+        ],
+        "info": "Inflammation of the airways that commonly causes coughing.",
+        "tip": "Rest and stay hydrated. Seek professional help for breathing difficulty."
+    },
+
+    "Asthma": {
+        "category": "Respiratory",
+        "symptoms": [
+            "shortness of breath", "wheezing",
+            "chest tightness", "cough",
+            "difficulty breathing"
+        ],
+        "info": "A condition that can cause episodes of breathing difficulty and wheezing.",
+        "tip": "Avoid known triggers and follow your healthcare professional's advice."
+    },
+
+    "Allergy": {
+        "category": "Immune",
+        "symptoms": [
+            "sneezing", "runny nose", "itchy eyes",
+            "rash", "itching", "congestion", "watery eyes"
+        ],
+        "info": "An immune response that can cause sneezing, itching and other reactions.",
+        "tip": "Avoid known triggers. Severe swelling or breathing difficulty requires urgent care."
+    },
+
+    "Food Poisoning": {
+        "category": "Digestive",
+        "symptoms": [
+            "nausea", "vomiting", "diarrhea",
+            "stomach pain", "fever", "weakness"
+        ],
+        "info": "Digestive illness that can cause vomiting, diarrhea and stomach discomfort.",
+        "tip": "Maintain fluids and seek medical advice if symptoms become severe."
+    },
+
+    "Gastritis": {
+        "category": "Digestive",
+        "symptoms": [
+            "stomach pain", "nausea", "vomiting",
+            "bloating", "indigestion", "loss of appetite"
+        ],
+        "info": "Inflammation of the stomach lining that may cause digestive discomfort.",
+        "tip": "Avoid foods or drinks that worsen symptoms and seek professional advice if persistent."
+    },
+
+    "Migraine": {
+        "category": "Neurological",
+        "symptoms": [
+            "headache", "nausea", "vomiting",
+            "sensitivity to light", "sensitivity to sound",
+            "dizziness"
+        ],
+        "info": "A type of headache that may be accompanied by nausea and sensitivity to light or sound.",
+        "tip": "Rest in a quiet environment and stay hydrated."
+    },
+
+    "Dehydration": {
+        "category": "General",
+        "symptoms": [
+            "thirst", "dry mouth", "dizziness",
+            "fatigue", "headache", "dark urine", "weakness"
+        ],
+        "info": "Occurs when the body loses more fluid than it takes in.",
+        "tip": "Drink fluids regularly. Severe symptoms require medical attention."
+    },
+
+    "Anemia": {
+        "category": "Blood",
+        "symptoms": [
+            "fatigue", "weakness", "dizziness",
+            "shortness of breath", "pale skin",
+            "headache", "rapid heartbeat"
+        ],
+        "info": "A condition involving reduced healthy red blood cells or hemoglobin.",
+        "tip": "Persistent tiredness or weakness should be evaluated by a healthcare professional."
+    },
+
+    "Urinary Tract Infection": {
+        "category": "Urinary",
+        "symptoms": [
+            "painful urination", "frequent urination",
+            "lower abdominal pain", "cloudy urine",
+            "strong urine odor"
+        ],
+        "info": "An infection affecting part of the urinary system.",
+        "tip": "Urinary symptoms should be assessed by a healthcare professional."
+    },
+
+    "Back Pain": {
+        "category": "Musculoskeletal",
+        "symptoms": [
+            "back pain", "lower back pain",
+            "muscle pain", "stiffness",
+            "difficulty moving"
+        ],
+        "info": "Back pain can have many possible causes, including muscle strain.",
+        "tip": "Gentle movement may be appropriate when comfortable. Persistent pain should be assessed."
+    },
+
+    "Arthritis": {
+        "category": "Musculoskeletal",
+        "symptoms": [
+            "joint pain", "joint stiffness",
+            "swelling", "reduced movement",
+            "joint tenderness"
+        ],
+        "info": "A group of conditions that can cause joint pain, stiffness and swelling.",
+        "tip": "Gentle movement may help maintain mobility. Persistent symptoms should be evaluated."
+    },
+
+    "Insomnia": {
+        "category": "Sleep",
+        "symptoms": [
+            "difficulty sleeping", "trouble staying asleep",
+            "daytime fatigue", "difficulty concentrating",
+            "irritability"
+        ],
+        "info": "Difficulty falling asleep, staying asleep, or getting enough restorative sleep.",
+        "tip": "Keep a regular sleep schedule and reduce stimulating activities before bedtime."
+    }
+}
+
+
+# ==========================================
+# SYMPTOM ALIASES
+# ==========================================
+
+aliases = {
+    "head pain": "headache",
+    "head hurts": "headache",
+    "high temperature": "fever",
+    "temperature": "fever",
+    "backache": "back pain",
+    "lower backache": "lower back pain",
+    "stomach ache": "stomach pain",
+    "belly pain": "stomach pain",
+    "throwing up": "vomiting",
+    "being sick": "vomiting",
+    "loose motion": "diarrhea",
+    "loose motions": "diarrhea",
+    "breathlessness": "shortness of breath",
+    "hard to breathe": "difficulty breathing",
+    "can't breathe": "difficulty breathing",
+    "cannot breathe": "difficulty breathing",
+    "joint ache": "joint pain",
+    "joint aches": "joint pain",
+    "sore joints": "joint tenderness",
+    "runny nose": "runny nose"
+}
+
+
+# ==========================================
+# FIND SYMPTOMS IN NATURAL LANGUAGE
+# ==========================================
+
+def extract_symptoms(text):
+
+    text = text.lower()
+
+    found = []
+
+    # Check aliases first
+    for phrase, symptom in aliases.items():
+
+        if phrase in text and symptom not in found:
+            found.append(symptom)
+
+    # Check database symptoms
+    all_symptoms = set()
+
+    for data in health_data.values():
+
+        for symptom in data["symptoms"]:
+            all_symptoms.add(symptom)
+
+    # Longer phrases first
+    sorted_symptoms = sorted(
+        all_symptoms,
+        key=len,
+        reverse=True
+    )
+
+    for symptom in sorted_symptoms:
+
+        if symptom in text and symptom not in found:
+            found.append(symptom)
+
+    return found
+
+
+# ==========================================
+# ANALYZE
+# ==========================================
+
+def analyze_symptoms():
+
+    text = entry.get().lower().strip()
+
+    result_box.delete("1.0", tk.END)
+
+    if not text:
+
+        result_box.insert(
+            tk.END,
+            "Please enter your symptoms.\n\n"
+            "Example:\n"
+            "I have a headache and fever."
+        )
+
+        return
+
+    emergency_words = [
+        "severe chest pain",
+        "severe difficulty breathing",
+        "unconscious",
+        "unconsciousness",
+        "fainting",
+        "severe bleeding"
+    ]
+
+    for word in emergency_words:
+
+        if word in text:
+
+            result_box.insert(
+                tk.END,
+                "URGENT MEDICAL ATTENTION\n\n"
+                "Your input contains a symptom that may "
+                "require immediate professional medical care.\n\n"
+                "Please seek urgent medical attention.\n\n"
+                "Do not use this app for emergency diagnosis."
+            )
+
+            return
+
+    symptoms = extract_symptoms(text)
+
+    if not symptoms:
+
+        result_box.insert(
+            tk.END,
+            "I couldn't identify a supported symptom.\n\n"
+            "Try something like:\n"
+            "headache and fever\n"
+            "or\n"
+            "I have back pain and stiffness."
+        )
+
+        return
+
+    results = []
+
+    for disease, data in health_data.items():
+
+        matched = []
+
+        for symptom in symptoms:
+
+            if symptom in data["symptoms"]:
+                matched.append(symptom)
+
+        if matched:
+
+            percentage = round(
+                (len(matched) / len(symptoms)) * 100
+            )
+
+            results.append(
+                (
+                    disease,
+                    data["category"],
+                    matched,
+                    percentage,
+                    data["info"],
+                    data["tip"]
+                )
+            )
+
+    results.sort(
+        key=lambda x: x[3],
+        reverse=True
+    )
+
+    result_box.insert(
+        tk.END,
+        "POSSIBLE MATCHES\n"
+    )
+
+    result_box.insert(
+        tk.END,
+        "────────────────────────\n\n"
+    )
+
+    result_box.insert(
+        tk.END,
+        "Symptoms detected: "
+        + ", ".join(symptoms)
+        + "\n\n"
+    )
+
+    if results:
+
+        for disease, category, matched, percentage, info, tip in results[:6]:
+
+            result_box.insert(
+                tk.END,
+                disease + "\n"
+            )
+
+            result_box.insert(
+                tk.END,
+                "Category: "
+                + category
+                + "\n"
+            )
+
+            result_box.insert(
+                tk.END,
+                "Matched symptoms: "
+                + ", ".join(matched)
+                + "\n"
+            )
+
+            result_box.insert(
+                tk.END,
+                "Match: "
+                + str(percentage)
+                + "%\n"
+            )
+
+            result_box.insert(
+                tk.END,
+                "Information: "
+                + info
+                + "\n"
+            )
+
+            result_box.insert(
+                tk.END,
+                "Tip: "
+                + tip
+                + "\n\n"
+            )
+
+        result_box.insert(
+            tk.END,
+            "Note: These are educational symptom matches, "
+            "not a medical diagnosis."
+        )
+
+    else:
+
+        result_box.insert(
+            tk.END,
+            "No matching condition was found."
+        )
+
+
+# ==========================================
+# HEALTH TIPS
+# ==========================================
+
+def show_tips():
+
+    result_box.delete("1.0", tk.END)
+
+    text = entry.get().lower().strip()
+
+    if not text:
+
+        result_box.insert(
+            tk.END,
+            "GENERAL HEALTH TIPS\n"
+            "────────────────────────\n\n"
+            "• Stay hydrated.\n\n"
+            "• Eat a balanced diet.\n\n"
+            "• Maintain a regular sleep schedule.\n\n"
+            "• Stay physically active when appropriate.\n\n"
+            "• Maintain good personal hygiene.\n\n"
+            "• Seek professional medical advice when needed."
+        )
+
+        return
+
+    symptoms = extract_symptoms(text)
+
+    tips = []
+
+    for disease, data in health_data.items():
+
+        for symptom in symptoms:
+
+            if symptom in data["symptoms"]:
+
+                if data["tip"] not in tips:
+                    tips.append(data["tip"])
+
+    if tips:
+
+        result_box.insert(
+            tk.END,
+            "HEALTH TIPS\n"
+            "────────────────────────\n\n"
+        )
+
+        for tip in tips[:5]:
+
+            result_box.insert(
+                tk.END,
+                "• " + tip + "\n\n"
+            )
+
+        result_box.insert(
+            tk.END,
+            "These are general educational suggestions."
+        )
+
+    else:
+
+        result_box.insert(
+            tk.END,
+            "No specific tip was found.\n\n"
+            "Try entering a symptom first."
+        )
+
+
+# ==========================================
+# CATEGORIES
+# ==========================================
+
+def show_categories():
+
+    result_box.delete("1.0", tk.END)
+
+    categories = {}
+
+    for disease, data in health_data.items():
+
+        category = data["category"]
+
+        if category not in categories:
+            categories[category] = []
+
+        categories[category].append(disease)
+
+    result_box.insert(
+        tk.END,
+        "HEALTH CATEGORIES\n"
+        "────────────────────────\n\n"
+    )
+
+    for category, diseases in categories.items():
+
+        result_box.insert(
+            tk.END,
+            category + "\n"
+        )
+
+        for disease in diseases:
+
+            result_box.insert(
+                tk.END,
+                "  • " + disease + "\n"
+            )
+
+        result_box.insert(
+            tk.END,
+            "\n"
+        )
+
+
+# ==========================================
+# CLEAR
+# ==========================================
+
+def clear_app():
+
+    entry.delete(0, tk.END)
+
+    result_box.delete(
+        "1.0",
+        tk.END
+    )
+
+
+# ==========================================
+# MAIN WINDOW
+# ==========================================
+
+app = tk.Tk()
+
+app.title("HealthAI Assistant")
+
+app.geometry("430x720")
+
+
+
+# ==========================================
+# COLORS
+# ==========================================
+
+BG = "#F4F8FA"
+CARD = "#FFFFFF"
+PRIMARY = "#167D8D"
+PRIMARY_DARK = "#126673"
+TEXT = "#24343B"
+SECONDARY = "#60747C"
+BORDER = "#D8E5E8"
+app.configure(
+    bg=BG
+)
+
+# ==========================================
+# HEADER
+# ==========================================
+
+header = tk.Frame(
+    app,
+    bg=PRIMARY,
+    height=110
+)
+
+header.pack(
+    fill="x"
+)
+
+header.pack_propagate(False)
+
+
+title = tk.Label(
+    header,
+    text="HealthAI",
+    font=("Arial", 21, "bold"),
+    bg=PRIMARY,
+    fg="white"
+)
+
+title.pack(
+    pady=(17, 2)
+)
+
+
+subtitle = tk.Label(
+    header,
+    text="Healthcare Education Assistant",
+    font=("Arial", 10),
+    bg=PRIMARY,
+    fg="white"
+)
+
+subtitle.pack()
+
+
+# ==========================================
+# INPUT
+# ==========================================
+
+input_frame = tk.Frame(
+    app,
+    bg=CARD,
+    highlightbackground=BORDER,
+    highlightthickness=1
+)
+
+input_frame.pack(
+    fill="x",
+    padx=18,
+    pady=16
+)
+
+
+entry_label = tk.Label(
+    input_frame,
+    text="Enter your symptoms",
+    font=("Arial", 10, "bold"),
+    bg=CARD,
+    fg=TEXT
+)
+
+entry_label.pack(
+    anchor="w",
+    padx=14,
+    pady=(12, 5)
+)
+
+
+entry = tk.Entry(
+    input_frame,
+    font=("Arial", 12),
+    bg="white",
+    fg=TEXT,
+    relief="solid",
+    bd=1
+)
+
+entry.pack(
+    fill="x",
+    padx=14,
+    ipady=6
+)
+
+
+example = tk.Label(
+    input_frame,
+    text="Example: I have a headache and fever",
+    font=("Arial", 8),
+    bg=CARD,
+    fg=SECONDARY
+)
+
+example.pack(
+    anchor="w",
+    padx=14,
+    pady=(4, 12)
+)
+
+
+# ==========================================
+# BUTTONS
+# ==========================================
+
+analyze_button = tk.Button(
+    app,
+    text="Analyze Symptoms",
+    font=("Arial", 10, "bold"),
+    bg=PRIMARY,
+    fg="white",
+    activebackground=PRIMARY_DARK,
+    activeforeground="white",
+    relief="flat",
+    command=analyze_symptoms
+)
+
+analyze_button.pack(
+    fill="x",
+    padx=35,
+    pady=4,
+    ipady=6
+)
+
+
+category_button = tk.Button(
+    app,
+    text="Health Categories",
+    font=("Arial", 9),
+    bg=CARD,
+    fg=TEXT,
+    activebackground=BORDER,
+    relief="solid",
+    bd=1,
+    command=show_categories
+)
+
+category_button.pack(
+    fill="x",
+    padx=35,
+    pady=3,
+    ipady=4
+)
+
+
+tips_button = tk.Button(
+    app,
+    text="Health Tips",
+    font=("Arial", 9),
+    bg=CARD,
+    fg=TEXT,
+    activebackground=BORDER,
+    relief="solid",
+    bd=1,
+    command=show_tips
+)
+
+tips_button.pack(
+    fill="x",
+    padx=35,
+    pady=3,
+    ipady=4
+)
+
+
+clear_button = tk.Button(
+    app,
+    text="Clear",
+    font=("Arial", 9),
+    bg=CARD,
+    fg=SECONDARY,
+    activebackground=BORDER,
+    relief="solid",
+    bd=1,
+    command=clear_app
+)
+
+clear_button.pack(
+    fill="x",
+    padx=35,
+    pady=3,
+    ipady=4
+)
+
+
+# ==========================================
+# RESULT BOX
+# ==========================================
+
+result_box = tk.Text(
+    app,
+    height=18,
+    width=46,
+    wrap=tk.WORD,
+    font=("Arial", 9),
+    bg=CARD,
+    fg=TEXT,
+    relief="solid",
+    bd=1,
+    padx=10,
+    pady=8
+)
+
+result_box.pack(
+    fill="both",
+    expand=True,
+    padx=18,
+    pady=12
+)
+
+
+# ==========================================
+# DISCLAIMER
+# ==========================================
+
+disclaimer = tk.Label(
+    app,
+    text="Educational prototype • Not medical advice",
+    font=("Arial", 8),
+    bg=BG,
+    fg=SECONDARY
+)
+
+disclaimer.pack(
+    pady=(0, 8)
+)
+
+
+app.mainloop()
