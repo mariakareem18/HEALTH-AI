@@ -4,667 +4,1189 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>HealthAI — Healthcare Education Assistant</title>
+<title>HealthAI - Healthcare Education Assistant</title>
 
 <style>
-* {
-    box-sizing: border-box;
+*{
+    box-sizing:border-box;
 }
 
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f4f8fa;
-    color: #24343b;
+body{
+    margin:0;
+    background:#f4f8fa;
+    color:#24343b;
+    font-family:Arial,sans-serif;
 }
 
-.header {
-    background: #167d8d;
-    color: white;
-    text-align: center;
-    padding: 28px 15px;
+header{
+    background:#167d8d;
+    color:white;
+    text-align:center;
+    padding:28px 15px;
 }
 
-.header h1 {
-    margin: 0 0 6px;
-    font-size: 28px;
+header h1{
+    margin:0 0 6px;
+    font-size:28px;
 }
 
-.header p {
-    margin: 0;
-    font-size: 13px;
+header p{
+    margin:0;
+    font-size:13px;
 }
 
-.container {
-    max-width: 760px;
-    margin: 20px auto;
-    padding: 0 16px;
+.container{
+    max-width:760px;
+    margin:20px auto;
+    padding:0 16px;
 }
 
-.card {
-    background: white;
-    border: 1px solid #d8e5e8;
-    border-radius: 14px;
-    padding: 18px;
-    margin-bottom: 16px;
-    box-shadow: 0 3px 12px rgba(20, 60, 70, 0.06);
+.card{
+    background:white;
+    border:1px solid #d8e5e8;
+    border-radius:14px;
+    padding:18px;
+    margin-bottom:16px;
+    box-shadow:0 3px 12px rgba(20,60,70,.06);
 }
 
-label {
-    display: block;
-    font-size: 14px;
-    font-weight: bold;
-    margin-bottom: 8px;
+label{
+    display:block;
+    font-weight:bold;
+    font-size:14px;
+    margin-bottom:8px;
 }
 
-textarea {
-    width: 100%;
-    min-height: 100px;
-    padding: 12px;
-    border: 1px solid #d8e5e8;
-    border-radius: 10px;
-    resize: vertical;
-    font-size: 14px;
-    font-family: Arial, sans-serif;
+textarea{
+    width:100%;
+    min-height:100px;
+    padding:12px;
+    border:1px solid #d8e5e8;
+    border-radius:10px;
+    resize:vertical;
+    font-size:14px;
+    font-family:Arial,sans-serif;
 }
 
-textarea:focus {
-    outline: none;
-    border-color: #167d8d;
+textarea:focus{
+    outline:none;
+    border-color:#167d8d;
 }
 
-.example {
-    color: #60747c;
-    font-size: 11px;
-    margin-top: 6px;
+.example{
+    color:#60747c;
+    font-size:11px;
+    margin-top:6px;
 }
 
-.buttons {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    gap: 8px;
-    margin-top: 12px;
+.buttons{
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr;
+    gap:8px;
+    margin-top:12px;
 }
 
-button {
-    padding: 11px;
-    border-radius: 9px;
-    font-size: 13px;
-    font-weight: bold;
-    cursor: pointer;
+button{
+    padding:11px 8px;
+    border-radius:9px;
+    font-size:13px;
+    font-weight:bold;
+    cursor:pointer;
 }
 
-.primary {
-    background: #167d8d;
-    color: white;
-    border: none;
+.primary{
+    background:#167d8d;
+    color:white;
+    border:0;
 }
 
-.primary:hover {
-    background: #126673;
+.primary:hover{
+    background:#126673;
 }
 
-.secondary {
-    background: white;
-    color: #24343b;
-    border: 1px solid #d8e5e8;
+.secondary{
+    background:white;
+    color:#24343b;
+    border:1px solid #d8e5e8;
 }
 
-.secondary:hover {
-    background: #eef5f6;
+.secondary:hover{
+    background:#eef5f6;
 }
 
-.clear {
-    width: 100%;
-    margin-top: 8px;
+.clear{
+    width:100%;
+    margin-top:8px;
 }
 
-.result h2 {
-    font-size: 18px;
-    margin-top: 0;
+.result h2{
+    font-size:18px;
+    margin-top:0;
 }
 
-.small {
-    font-size: 13px;
-    line-height: 1.5;
+.small{
+    font-size:13px;
+    line-height:1.55;
 }
 
-.match {
-    border: 1px solid #d8e5e8;
-    border-radius: 11px;
-    padding: 13px;
-    margin: 10px 0;
+.match{
+    border:1px solid #d8e5e8;
+    border-radius:11px;
+    padding:14px;
+    margin:12px 0;
 }
 
-.match h3 {
-    margin: 0 0 6px;
-    font-size: 16px;
+.match h3{
+    margin:0 0 6px;
+    font-size:16px;
 }
 
-.meta {
-    color: #60747c;
-    font-size: 12px;
+.meta{
+    color:#60747c;
+    font-size:12px;
 }
 
-.bar {
-    height: 7px;
-    background: #e7eff1;
-    border-radius: 10px;
-    overflow: hidden;
-    margin: 8px 0;
+.bar{
+    height:7px;
+    background:#e7eff1;
+    border-radius:10px;
+    overflow:hidden;
+    margin:8px 0;
 }
 
-.fill {
-    height: 100%;
-    background: #167d8d;
+.fill{
+    height:100%;
+    background:#167d8d;
 }
 
-.notice {
-    background: #fff8e8;
-    border-left: 4px solid #d99b2b;
-    padding: 12px;
-    border-radius: 8px;
-    font-size: 13px;
+.notice{
+    background:#fff8e8;
+    border-left:4px solid #d99b2b;
+    padding:13px;
+    border-radius:8px;
+    font-size:13px;
 }
 
-.footer {
-    text-align: center;
-    color: #60747c;
-    font-size: 11px;
-    padding-bottom: 20px;
+.tip{
+    background:#eef8f8;
+    border-radius:8px;
+    padding:10px;
 }
 
-@media (max-width: 600px) {
-    .buttons {
-        grid-template-columns: 1fr;
+.footer{
+    text-align:center;
+    color:#60747c;
+    font-size:11px;
+    padding-bottom:20px;
+}
+
+@media(max-width:600px){
+
+    .buttons{
+        grid-template-columns:1fr;
     }
 
-    .header h1 {
-        font-size: 24px;
+    header h1{
+        font-size:24px;
     }
 }
 </style>
 </head>
 
+
 <body>
 
-<header class="header">
-    <h1>🩺 HealthAI</h1>
-    <p>Healthcare Education Assistant</p>
+<header>
+
+<h1>🩺 HealthAI</h1>
+
+<p>
+Healthcare Education Assistant
+</p>
+
 </header>
 
+
 <main class="container">
+
 
 <section class="card">
 
 <label for="symptoms">
-    Enter your symptoms
+Enter your symptoms
 </label>
 
+
 <textarea
-    id="symptoms"
-    placeholder="Example: I have a headache and fever">
+id="symptoms"
+placeholder="Example: I have a headache and fever">
 </textarea>
 
+
 <div class="example">
-    You can describe your symptoms in a natural sentence.
+
+You can enter one or several symptoms,
+for example: headache, fever, cough
+
 </div>
+
 
 <div class="buttons">
 
-<button class="primary" onclick="analyzeSymptoms()">
-    Analyze Symptoms
+<button
+class="primary"
+onclick="analyzeSymptoms()">
+
+Analyze Symptoms
+
 </button>
 
-<button class="secondary" onclick="showTips()">
-    Health Tips
+
+<button
+class="secondary"
+onclick="showTips()">
+
+Health Tips
+
 </button>
 
-<button class="secondary" onclick="showCategories()">
-    Categories
+
+<button
+class="secondary"
+onclick="showCategories()">
+
+Categories
+
 </button>
 
 </div>
 
-<button class="secondary clear" onclick="clearApp()">
-    Clear
+
+<button
+class="secondary clear"
+onclick="clearApp()">
+
+Clear
+
 </button>
 
 </section>
 
 
-<section class="card result" id="result">
 
-<h2>Welcome to HealthAI</h2>
+<section
+class="card result"
+id="result">
+
+<h2>
+Welcome to HealthAI
+</h2>
 
 <p class="small">
-    Enter one or more symptoms above to explore
-    educational health information.
+
+Enter one or more symptoms above to
+explore educational health information.
+
 </p>
 
 </section>
 
+
+
 <div class="footer">
-    Educational prototype • Not medical advice
+
+Educational prototype • Not medical advice
+
 </div>
+
 
 </main>
 
 
-<script>
 
 <script>
+
+/* =========================
+   HEALTH DATABASE
+========================= */
+
 const healthData = {
-"Common Flu": {
-category:"Infectious",
-symptoms:["fever","cough","headache","body aches","fatigue","sore throat","chills","weakness"],
-info:"A viral illness that commonly causes fever, cough, tiredness and body aches.",
-tip:"Rest, stay hydrated, and monitor your symptoms."
-},
-"COVID-19": {
-category:"Infectious",
-symptoms:["fever","cough","headache","fatigue","sore throat","loss of taste","loss of smell","shortness of breath"],
-info:"A respiratory infection that can cause fever, cough and fatigue.",
-tip:"Rest, maintain fluids, and seek professional help if breathing becomes difficult."
-},
-"Malaria": {
-category:"Infectious",
-symptoms:["fever","chills","headache","sweating","body aches","nausea","fatigue","weakness"],
-info:"A mosquito-borne disease that commonly causes fever and chills.",
-tip:"Suspected malaria should be evaluated by a healthcare professional."
-},
-"Common Cold": {
+
+"Common Cold":{
 category:"Respiratory",
-symptoms:["cough","sneezing","runny nose","sore throat","headache","congestion"],
-info:"A common respiratory illness that can cause sneezing, congestion and coughing.",
-tip:"Rest, drink fluids, and avoid known irritants."
+symptoms:[
+"cough",
+"sneezing",
+"runny nose",
+"stuffy nose",
+"blocked nose",
+"sore throat",
+"headache",
+"congestion"
+],
+info:"A common respiratory illness that may cause sneezing, congestion, coughing and sore throat.",
+tip:"Rest, drink enough fluids and monitor symptoms."
 },
-"Bronchitis": {
+
+
+"Influenza (Flu)":{
+category:"Infectious",
+symptoms:[
+"fever",
+"cough",
+"headache",
+"body aches",
+"muscle aches",
+"fatigue",
+"sore throat",
+"chills",
+"weakness",
+"runny nose"
+],
+info:"Influenza commonly causes fever, cough, tiredness, chills and body aches.",
+tip:"Rest, stay hydrated and seek professional advice if symptoms are severe."
+},
+
+
+"COVID-19":{
+category:"Infectious",
+symptoms:[
+"fever",
+"cough",
+"headache",
+"fatigue",
+"sore throat",
+"loss of taste",
+"loss of smell",
+"shortness of breath",
+"body aches",
+"runny nose"
+],
+info:"COVID-19 can cause respiratory and general symptoms such as cough, fever and fatigue.",
+tip:"Rest, maintain fluids and seek medical help if breathing becomes difficult."
+},
+
+
+"Malaria":{
+category:"Infectious",
+symptoms:[
+"fever",
+"chills",
+"headache",
+"sweating",
+"body aches",
+"nausea",
+"fatigue",
+"weakness",
+"vomiting"
+],
+info:"Malaria is a mosquito-borne infection that commonly causes fever and chills.",
+tip:"Suspected malaria requires evaluation and testing by a healthcare professional."
+},
+
+
+"Bronchitis":{
 category:"Respiratory",
-symptoms:["cough","fatigue","chest discomfort","mild fever","shortness of breath","wheezing"],
-info:"Inflammation of the airways that commonly causes coughing.",
-tip:"Rest and stay hydrated. Seek professional help for breathing difficulty."
+symptoms:[
+"cough",
+"fatigue",
+"chest discomfort",
+"mild fever",
+"shortness of breath",
+"wheezing",
+"mucus"
+],
+info:"Bronchitis involves inflammation of the airways and commonly causes coughing.",
+tip:"Rest and stay hydrated. Seek medical advice for breathing problems or persistent symptoms."
 },
-"Asthma": {
+
+
+"Asthma":{
 category:"Respiratory",
-symptoms:["shortness of breath","wheezing","chest tightness","cough","difficulty breathing"],
-info:"A condition that can cause episodes of breathing difficulty and wheezing.",
-tip:"Avoid known triggers and follow your healthcare professional's advice."
+symptoms:[
+"shortness of breath",
+"difficulty breathing",
+"wheezing",
+"chest tightness",
+"cough"
+],
+info:"Asthma can cause episodes of breathing difficulty, wheezing and chest tightness.",
+tip:"Avoid known triggers and follow the treatment plan provided by your healthcare professional."
 },
-"Allergy": {
+
+
+"Allergy":{
 category:"Immune",
-symptoms:["sneezing","runny nose","itchy eyes","rash","itching","congestion","watery eyes"],
-info:"An immune response that can cause sneezing, itching and other reactions.",
-tip:"Avoid known triggers. Severe swelling or breathing difficulty requires urgent care."
+symptoms:[
+"sneezing",
+"runny nose",
+"itchy eyes",
+"watery eyes",
+"rash",
+"itching",
+"congestion"
+],
+info:"Allergic reactions can cause sneezing, itching, watery eyes, rash and congestion.",
+tip:"Avoid known triggers. Severe swelling or breathing difficulty requires urgent medical attention."
 },
-"Food Poisoning": {
+
+
+"Food Poisoning":{
 category:"Digestive",
-symptoms:["nausea","vomiting","diarrhea","stomach pain","fever","weakness"],
-info:"Digestive illness that can cause vomiting, diarrhea and stomach discomfort.",
-tip:"Maintain fluids and seek medical advice if symptoms become severe."
+symptoms:[
+"nausea",
+"vomiting",
+"diarrhea",
+"stomach pain",
+"abdominal pain",
+"fever",
+"weakness"
+],
+info:"Food poisoning can cause digestive symptoms such as nausea, vomiting and diarrhea.",
+tip:"Maintain fluids and seek medical advice if symptoms become severe or persistent."
 },
-"Gastritis": {
+
+
+"Gastritis":{
 category:"Digestive",
-symptoms:["stomach pain","nausea","vomiting","bloating","indigestion","loss of appetite"],
-info:"Inflammation of the stomach lining that may cause digestive discomfort.",
-tip:"Avoid foods or drinks that worsen symptoms and seek professional advice if persistent."
+symptoms:[
+"stomach pain",
+"abdominal pain",
+"nausea",
+"vomiting",
+"bloating",
+"indigestion",
+"loss of appetite"
+],
+info:"Gastritis involves inflammation of the stomach lining and may cause digestive discomfort.",
+tip:"Avoid foods or drinks that worsen symptoms and seek professional advice if symptoms persist."
 },
-"Migraine": {
+
+
+"Migraine":{
 category:"Neurological",
-symptoms:["headache","nausea","vomiting","sensitivity to light","sensitivity to sound","dizziness"],
-info:"A type of headache that may be accompanied by nausea and sensitivity to light or sound.",
+symptoms:[
+"headache",
+"nausea",
+"vomiting",
+"sensitivity to light",
+"sensitivity to sound",
+"dizziness"
+],
+info:"Migraine is a type of headache that may occur with nausea or sensitivity to light and sound.",
 tip:"Rest in a quiet environment and stay hydrated."
 },
-"Dehydration": {
+
+
+"Dehydration":{
 category:"General",
-symptoms:["thirst","dry mouth","dizziness","fatigue","headache","dark urine","weakness"],
-info:"Occurs when the body loses more fluid than it takes in.",
-tip:"Drink fluids regularly. Severe symptoms require medical attention."
+symptoms:[
+"thirst",
+"dry mouth",
+"dizziness",
+"fatigue",
+"headache",
+"dark urine",
+"weakness"
+],
+info:"Dehydration occurs when the body loses more fluid than it takes in.",
+tip:"Drink fluids regularly. Severe dehydration requires medical attention."
 },
-"Anemia": {
+
+
+"Anemia":{
 category:"Blood",
-symptoms:["fatigue","weakness","dizziness","shortness of breath","pale skin","headache","rapid heartbeat"],
-info:"A condition involving reduced healthy red blood cells or hemoglobin.",
-tip:"Persistent tiredness or weakness should be evaluated by a healthcare professional."
+symptoms:[
+"fatigue",
+"weakness",
+"dizziness",
+"shortness of breath",
+"pale skin",
+"headache",
+"rapid heartbeat"
+],
+info:"Anemia can be associated with tiredness, weakness, dizziness and shortness of breath.",
+tip:"Persistent symptoms should be evaluated by a healthcare professional."
 },
-"Urinary Tract Infection": {
+
+
+"Urinary Tract Infection (UTI)":{
 category:"Urinary",
-symptoms:["painful urination","frequent urination","lower abdominal pain","cloudy urine","strong urine odor"],
-info:"An infection affecting part of the urinary system.",
+symptoms:[
+"painful urination",
+"burning urination",
+"frequent urination",
+"lower abdominal pain",
+"cloudy urine",
+"strong urine odor"
+],
+info:"A urinary tract infection can cause painful or frequent urination and lower abdominal discomfort.",
 tip:"Urinary symptoms should be assessed by a healthcare professional."
 },
-"Back Pain": {
+
+
+"Back Pain":{
 category:"Musculoskeletal",
-symptoms:["back pain","lower back pain","muscle pain","stiffness","difficulty moving"],
-info:"Back pain can have many possible causes, including muscle strain.",
-tip:"Gentle movement may be appropriate when comfortable. Persistent pain should be assessed."
+symptoms:[
+"back pain",
+"lower back pain",
+"backache",
+"muscle pain",
+"stiffness",
+"difficulty moving"
+],
+info:"Back pain can have many causes, including muscle strain and other conditions.",
+tip:"Persistent, severe or worsening back pain should be assessed by a healthcare professional."
 },
-"Arthritis": {
+
+
+"Arthritis":{
 category:"Musculoskeletal",
-symptoms:["joint pain","joint stiffness","swelling","reduced movement","joint tenderness"],
-info:"A group of conditions that can cause joint pain, stiffness and swelling.",
-tip:"Gentle movement may help maintain mobility. Persistent symptoms should be evaluated."
+symptoms:[
+"joint pain",
+"joint stiffness",
+"joint swelling",
+"swelling",
+"reduced movement",
+"joint tenderness"
+],
+info:"Arthritis refers to conditions that can cause joint pain, stiffness and swelling.",
+tip:"Persistent joint symptoms should be evaluated by a healthcare professional."
 },
-"Insomnia": {
+
+
+"Insomnia":{
 category:"Sleep",
-symptoms:["difficulty sleeping","trouble staying asleep","daytime fatigue","difficulty concentrating","irritability"],
-info:"Difficulty falling asleep, staying asleep, or getting enough restorative sleep.",
+symptoms:[
+"difficulty sleeping",
+"trouble sleeping",
+"trouble staying asleep",
+"daytime fatigue",
+"difficulty concentrating",
+"irritability"
+],
+info:"Insomnia involves difficulty falling asleep, staying asleep or getting restorative sleep.",
 tip:"Keep a regular sleep schedule and reduce stimulating activities before bedtime."
+},
+
+
+"Sinusitis":{
+category:"Respiratory",
+symptoms:[
+"facial pain",
+"facial pressure",
+"headache",
+"stuffy nose",
+"blocked nose",
+"runny nose",
+"congestion"
+],
+info:"Sinusitis can cause congestion, facial pressure and headache.",
+tip:"Persistent or severe symptoms should be evaluated by a healthcare professional."
+},
+
+
+"Acid Reflux":{
+category:"Digestive",
+symptoms:[
+"heartburn",
+"chest burning",
+"acid taste",
+"regurgitation",
+"indigestion",
+"bloating"
+],
+info:"Acid reflux occurs when stomach contents flow back toward the esophagus.",
+tip:"Avoid foods that trigger symptoms and seek medical advice for persistent symptoms."
 }
+
 };
+
+
+
+/* =========================
+   SYMPTOM ALIASES
+========================= */
 
 const aliases = {
+
 "head pain":"headache",
 "head hurts":"headache",
+"head ache":"headache",
+
 "high temperature":"fever",
 "temperature":"fever",
+
 "backache":"back pain",
 "lower backache":"lower back pain",
+
 "stomach ache":"stomach pain",
 "belly pain":"stomach pain",
+
 "throwing up":"vomiting",
-"being sick":"vomiting",
+"throw up":"vomiting",
+
 "loose motion":"diarrhea",
 "loose motions":"diarrhea",
+
 "breathlessness":"shortness of breath",
+"breathing problem":"difficulty breathing",
 "hard to breathe":"difficulty breathing",
-"can't breathe":"difficulty breathing",
-"cannot breathe":"difficulty breathing",
+
 "joint ache":"joint pain",
 "joint aches":"joint pain",
-"sore joints":"joint tenderness"
+
+"burning urine":"burning urination"
+
 };
 
+
+
+/* =========================
+   EXTRACT SYMPTOMS
+========================= */
+
 function extractSymptoms(text){
-text=text.toLowerCase();
-let found=[];
 
-for(const phrase in aliases){
-if(text.includes(phrase)){
-const symptom=aliases[phrase];
-if(!found.includes(symptom)) found.push(symptom);
-}
+    text=text.toLowerCase();
+
+    let found=[];
+
+
+    /* aliases first */
+
+    for(const phrase in aliases){
+
+        if(text.includes(phrase)){
+
+            const symptom=aliases[phrase];
+
+            if(!found.includes(symptom)){
+                found.push(symptom);
+            }
+        }
+    }
+
+
+    /* database symptoms */
+
+    let allSymptoms=[];
+
+
+    for(const disease in healthData){
+
+        allSymptoms.push(
+            ...healthData[disease].symptoms
+        );
+    }
+
+
+    allSymptoms=[
+        ...new Set(allSymptoms)
+    ];
+
+
+    /* longer phrases first */
+
+    allSymptoms.sort(
+        (a,b)=>b.length-a.length
+    );
+
+
+    for(const symptom of allSymptoms){
+
+        if(
+            text.includes(symptom) &&
+            !found.includes(symptom)
+        ){
+
+            found.push(symptom);
+        }
+    }
+
+
+    return found;
 }
 
-let allSymptoms=new Set();
 
-for(const disease in healthData){
-healthData[disease].symptoms.forEach(function(symptom){
-allSymptoms.add(symptom);
-});
-}
 
-Array.from(allSymptoms)
-.sort((a,b)=>b.length-a.length)
-.forEach(function(symptom){
-if(text.includes(symptom)&&!found.includes(symptom)){
-found.push(symptom);
-}
-});
-
-return found;
-}
+/* =========================
+   ANALYZE
+========================= */
 
 function analyzeSymptoms(){
 
-const text=document.getElementById("symptoms").value.toLowerCase().trim();
-const result=document.getElementById("result");
+    const input=
+    document
+    .getElementById("symptoms")
+    .value
+    .trim()
+    .toLowerCase();
 
-if(!text){
-result.innerHTML=`
-<h2>Please enter your symptoms.</h2>
-<p class="small">Example: I have a headache and fever.</p>
-`;
-return;
+
+    const result=
+    document
+    .getElementById("result");
+
+
+    /* empty */
+
+    if(!input){
+
+        result.innerHTML=`
+
+        <h2>
+        Please enter your symptoms
+        </h2>
+
+        <p class="small">
+
+        Example:
+        <b>headache and fever</b>
+
+        </p>
+
+        `;
+
+        return;
+    }
+
+
+    /* emergency warning */
+
+    const emergencyWords=[
+
+        "severe chest pain",
+        "chest pain and difficulty breathing",
+        "severe difficulty breathing",
+        "cannot breathe",
+        "can't breathe",
+        "unconscious",
+        "fainting",
+        "severe bleeding"
+
+    ];
+
+
+    for(const emergency of emergencyWords){
+
+        if(input.includes(emergency)){
+
+            result.innerHTML=`
+
+            <div class="notice">
+
+            <b>
+            ⚠️ Urgent Medical Attention
+            </b>
+
+            <br><br>
+
+            Your input contains a symptom
+            that may require immediate medical care.
+
+            <br><br>
+
+            Please seek urgent medical attention.
+
+            <br><br>
+
+            This application cannot diagnose
+            or manage medical emergencies.
+
+            </div>
+
+            `;
+
+            return;
+        }
+    }
+
+
+    const symptoms=
+    extractSymptoms(input);
+
+
+    /* no symptoms */
+
+    if(symptoms.length===0){
+
+        result.innerHTML=`
+
+        <h2>
+        No supported symptom detected
+        </h2>
+
+        <p class="small">
+
+        Try entering symptoms such as:
+
+        <br><br>
+
+        <b>
+        headache, fever, cough
+        </b>
+
+        <br>
+
+        <b>
+        back pain and stiffness
+        </b>
+
+        <br>
+
+        <b>
+        nausea and stomach pain
+        </b>
+
+        </p>
+
+        `;
+
+        return;
+    }
+
+
+    let results=[];
+
+
+    /* calculate matches */
+
+    for(const disease in healthData){
+
+        const data=
+        healthData[disease];
+
+
+        const matched=
+        symptoms.filter(
+            symptom =>
+            data.symptoms.includes(symptom)
+        );
+
+
+        if(matched.length>0){
+
+            /*
+             We calculate the percentage from
+             the user's detected symptoms.
+            */
+
+            const percentage=
+            Math.round(
+                (matched.length/symptoms.length)*100
+            );
+
+
+            results.push({
+
+                disease:disease,
+                data:data,
+                matched:matched,
+                percentage:percentage
+
+            });
+        }
+    }
+
+
+    results.sort(
+        (a,b)=>
+        b.percentage-a.percentage
+    );
+
+
+    let html=`
+
+    <h2>
+    🔎 Possible Matches
+    </h2>
+
+    <p class="small">
+
+    <b>
+    Symptoms detected:
+    </b>
+
+    ${symptoms.join(", ")}
+
+    </p>
+
+    `;
+
+
+    results
+    .slice(0,6)
+    .forEach(item=>{
+
+        html+=`
+
+        <div class="match">
+
+        <h3>
+        ${item.disease}
+        </h3>
+
+        <div class="meta">
+
+        ${item.data.category}
+        •
+        ${item.percentage}% symptom match
+
+        </div>
+
+
+        <div class="bar">
+
+        <div
+        class="fill"
+        style="width:${item.percentage}%">
+        </div>
+
+        </div>
+
+
+        <p class="small">
+
+        <b>
+        Matched symptoms:
+        </b>
+
+        ${item.matched.join(", ")}
+
+        </p>
+
+
+        <p class="small">
+
+        <b>
+        Information:
+        </b>
+
+        ${item.data.info}
+
+        </p>
+
+
+        <div class="tip small">
+
+        <b>
+        💡 Health tip:
+        </b>
+
+        ${item.data.tip}
+
+        </div>
+
+
+        </div>
+
+        `;
+
+    });
+
+
+    html+=`
+
+    <p class="small">
+
+    <b>
+    Important:
+    </b>
+
+    These are educational symptom matches,
+    not a medical diagnosis.
+
+    </p>
+
+    `;
+
+
+    result.innerHTML=html;
 }
 
-const emergencyWords=[
-"severe chest pain",
-"severe difficulty breathing",
-"unconscious",
-"unconsciousness",
-"fainting",
-"severe bleeding"
-];
 
-for(const word of emergencyWords){
-if(text.includes(word)){
-result.innerHTML=`
-<h2>⚠️ URGENT MEDICAL ATTENTION</h2>
-<div class="notice">
-Your input contains a symptom that may require immediate professional medical care.
-<br><br>
-Please seek urgent medical attention.
-<br><br>
-Do not use this app for emergency diagnosis.
-</div>
-`;
-return;
-}
-}
 
-const symptoms=extractSymptoms(text);
-
-if(symptoms.length===0){
-result.innerHTML=`
-<h2>I couldn't identify a supported symptom.</h2>
-<p class="small">
-Try something like:<br><br>
-<b>headache and fever</b>
-<br><br>
-or<br><br>
-<b>I have back pain and stiffness.</b>
-</p>
-`;
-return;
-}
-
-let results=[];
-
-for(const disease in healthData){
-
-const data=healthData[disease];
-let matched=[];
-
-for(const symptom of symptoms){
-if(data.symptoms.includes(symptom)){
-matched.push(symptom);
-}
-}
-
-if(matched.length>0){
-
-const percentage=Math.round(
-(matched.length/symptoms.length)*100
-);
-
-results.push({
-disease:disease,
-category:data.category,
-matched:matched,
-percentage:percentage,
-info:data.info,
-tip:data.tip
-});
-}
-}
-
-results.sort((a,b)=>b.percentage-a.percentage);
-
-let html=`
-<h2>Possible Matches</h2>
-<p class="small">
-<b>Symptoms detected:</b> ${symptoms.join(", ")}
-</p>
-`;
-
-if(results.length>0){
-
-results.slice(0,6).forEach(function(item){
-
-html+=`
-<div class="match">
-
-<h3>${item.disease}</h3>
-
-<div class="meta">
-Category: ${item.category}
-</div>
-
-<div class="meta">
-Matched symptoms: ${item.matched.join(", ")}
-</div>
-
-<div class="bar">
-<div class="fill" style="width:${Math.min(item.percentage,100)}%"></div>
-</div>
-
-<div class="meta">
-Match: ${item.percentage}%
-</div>
-
-<p class="small">
-<b>Information:</b> ${item.info}
-</p>
-
-<p class="small">
-<b>Tip:</b> ${item.tip}
-</p>
-
-</div>
-`;
-});
-
-}else{
-
-html+=`
-<p class="small">
-No matching condition was found.
-</p>
-`;
-}
-
-html+=`
-<div class="notice">
-Note: These are educational symptom matches, not a medical diagnosis.
-</div>
-`;
-
-result.innerHTML=html;
-}
+/* =========================
+   HEALTH TIPS
+========================= */
 
 function showTips(){
 
-const result=document.getElementById("result");
-const text=document.getElementById("symptoms").value.toLowerCase().trim();
+    const input=
+    document
+    .getElementById("symptoms")
+    .value
+    .toLowerCase();
 
-if(!text){
 
-result.innerHTML=`
-<h2>General Health Tips</h2>
-<p class="small">
-• Stay hydrated.<br><br>
-• Eat a balanced diet.<br><br>
-• Maintain a regular sleep schedule.<br><br>
-• Stay physically active when appropriate.<br><br>
-• Maintain good personal hygiene.<br><br>
-• Seek professional medical advice when needed.
-</p>
-`;
-return;
+    const symptoms=
+    extractSymptoms(input);
+
+
+    let tips=[];
+
+
+    for(const disease in healthData){
+
+        const data=
+        healthData[disease];
+
+
+        const relevant=
+        symptoms.length===0 ||
+        symptoms.some(
+            symptom =>
+            data.symptoms.includes(symptom)
+        );
+
+
+        if(
+            relevant &&
+            !tips.includes(data.tip)
+        ){
+
+            tips.push(data.tip);
+        }
+    }
+
+
+    tips=tips.slice(0,8);
+
+
+    let html=`
+
+    <h2>
+    💡 Health Tips
+    </h2>
+
+    `;
+
+
+    tips.forEach(tip=>{
+
+        html+=`
+
+        <p class="small">
+        • ${tip}
+        </p>
+
+        `;
+
+    });
+
+
+    html+=`
+
+    <p class="small">
+
+    These are general educational
+    suggestions and are not medical advice.
+
+    </p>
+
+    `;
+
+
+    document
+    .getElementById("result")
+    .innerHTML=html;
 }
 
-const symptoms=extractSymptoms(text);
-let tips=[];
 
-for(const disease in healthData){
 
-const data=healthData[disease];
-
-for(const symptom of symptoms){
-
-if(data.symptoms.includes(symptom)&&!tips.includes(data.tip)){
-tips.push(data.tip);
-}
-}
-}
-
-if(tips.length>0){
-
-let html="<h2>Health Tips</h2>";
-
-tips.slice(0,5).forEach(function(tip){
-
-html+=`
-<p class="small">
-• ${tip}
-</p>
-`;
-});
-
-html+=`
-<div class="notice">
-These are general educational suggestions.
-</div>
-`;
-
-result.innerHTML=html;
-
-}else{
-
-result.innerHTML=`
-<h2>Health Tips</h2>
-<p class="small">
-No specific tip was found.
-<br><br>
-Try entering a symptom first.
-</p>
-`;
-}
-}
+/* =========================
+   CATEGORIES
+========================= */
 
 function showCategories(){
 
-const result=document.getElementById("result");
-let categories={};
+    let categories={};
 
-for(const disease in healthData){
 
-const category=healthData[disease].category;
+    for(const disease in healthData){
 
-if(!categories[category]){
-categories[category]=[];
+        const category=
+        healthData[disease].category;
+
+
+        if(!categories[category]){
+            categories[category]=[];
+        }
+
+
+        categories[category].push(disease);
+    }
+
+
+    let html=`
+
+    <h2>
+    📚 Health Categories
+    </h2>
+
+    `;
+
+
+    for(const category in categories){
+
+        html+=`
+
+        <p class="small">
+
+        <b>
+        ${category}
+        </b>
+
+        <br>
+
+        ${categories[category]
+        .map(disease=>"• "+disease)
+        .join("<br>")}
+
+        </p>
+
+        `;
+    }
+
+
+    document
+    .getElementById("result")
+    .innerHTML=html;
 }
 
-categories[category].push(disease);
-}
 
-let html="<h2>Health Categories</h2>";
 
-for(const category in categories){
-
-html+=`
-<p class="small">
-<b>${category}</b><br>
-${categories[category].map(disease=>"• "+disease).join("<br>")}
-</p>
-`;
-}
-
-result.innerHTML=html;
-}
+/* =========================
+   CLEAR
+========================= */
 
 function clearApp(){
 
-document.getElementById("symptoms").value="";
+    document
+    .getElementById("symptoms")
+    .value="";
 
-document.getElementById("result").innerHTML=`
-<h2>Welcome to HealthAI</h2>
-<p class="small">
-Enter one or more symptoms above to explore
-educational health information.
-</p>
-`;
+
+    document
+    .getElementById("result")
+    .innerHTML=`
+
+    <h2>
+    Welcome to HealthAI
+    </h2>
+
+    <p class="small">
+
+    Enter one or more symptoms above
+    to explore educational health information.
+
+    </p>
+
+    `;
 }
 
 </script>
+
+</body>
+    </html>
