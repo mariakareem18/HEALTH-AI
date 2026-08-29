@@ -253,73 +253,418 @@ button {
 
 <script>
 
+<script>
 const healthData = {
-
 "Common Flu": {
-category: "Infectious",
-symptoms: [
-"fever",
-"cough",
-"headache",
-"body aches",
-"fatigue",
-"sore throat",
-"chills",
-"weakness"
-],
-info:
-"A viral illness that commonly causes fever, cough, tiredness and body aches.",
-tip:
-"Rest, stay hydrated, and monitor your symptoms."
+category:"Infectious",
+symptoms:["fever","cough","headache","body aches","fatigue","sore throat","chills","weakness"],
+info:"A viral illness that commonly causes fever, cough, tiredness and body aches.",
+tip:"Rest, stay hydrated, and monitor your symptoms."
 },
-
 "COVID-19": {
-category: "Infectious",
-symptoms: [
-"fever",
-"cough",
-"headache",
-"fatigue",
-"sore throat",
-"loss of taste",
-"loss of smell",
-"shortness of breath"
-],
-info:
-"A respiratory infection that can cause fever, cough and fatigue.",
-tip:
-"Rest, maintain fluids, and seek professional help if breathing becomes difficult."
+category:"Infectious",
+symptoms:["fever","cough","headache","fatigue","sore throat","loss of taste","loss of smell","shortness of breath"],
+info:"A respiratory infection that can cause fever, cough and fatigue.",
+tip:"Rest, maintain fluids, and seek professional help if breathing becomes difficult."
 },
-
 "Malaria": {
-category: "Infectious",
-symptoms: [
-"fever",
-"chills",
-"headache",
-"sweating",
-"body aches",
-"nausea",
-"fatigue",
-"weakness"
-],
-info:
-"A mosquito-borne disease that commonly causes fever and chills.",
-tip:
-"Suspected malaria should be evaluated by a healthcare professional."
+category:"Infectious",
+symptoms:["fever","chills","headache","sweating","body aches","nausea","fatigue","weakness"],
+info:"A mosquito-borne disease that commonly causes fever and chills.",
+tip:"Suspected malaria should be evaluated by a healthcare professional."
 },
-
 "Common Cold": {
-category: "Respiratory",
-symptoms: [
-"cough",
-"sneezing",
-"runny nose",
-"sore throat",
-"headache",
-"congestion"
-],
-info:
-"A common respiratory illness that can cause sneezing, congestion and coughing.",
-tip:
-"Rest, drink fluids, and avoid
+category:"Respiratory",
+symptoms:["cough","sneezing","runny nose","sore throat","headache","congestion"],
+info:"A common respiratory illness that can cause sneezing, congestion and coughing.",
+tip:"Rest, drink fluids, and avoid known irritants."
+},
+"Bronchitis": {
+category:"Respiratory",
+symptoms:["cough","fatigue","chest discomfort","mild fever","shortness of breath","wheezing"],
+info:"Inflammation of the airways that commonly causes coughing.",
+tip:"Rest and stay hydrated. Seek professional help for breathing difficulty."
+},
+"Asthma": {
+category:"Respiratory",
+symptoms:["shortness of breath","wheezing","chest tightness","cough","difficulty breathing"],
+info:"A condition that can cause episodes of breathing difficulty and wheezing.",
+tip:"Avoid known triggers and follow your healthcare professional's advice."
+},
+"Allergy": {
+category:"Immune",
+symptoms:["sneezing","runny nose","itchy eyes","rash","itching","congestion","watery eyes"],
+info:"An immune response that can cause sneezing, itching and other reactions.",
+tip:"Avoid known triggers. Severe swelling or breathing difficulty requires urgent care."
+},
+"Food Poisoning": {
+category:"Digestive",
+symptoms:["nausea","vomiting","diarrhea","stomach pain","fever","weakness"],
+info:"Digestive illness that can cause vomiting, diarrhea and stomach discomfort.",
+tip:"Maintain fluids and seek medical advice if symptoms become severe."
+},
+"Gastritis": {
+category:"Digestive",
+symptoms:["stomach pain","nausea","vomiting","bloating","indigestion","loss of appetite"],
+info:"Inflammation of the stomach lining that may cause digestive discomfort.",
+tip:"Avoid foods or drinks that worsen symptoms and seek professional advice if persistent."
+},
+"Migraine": {
+category:"Neurological",
+symptoms:["headache","nausea","vomiting","sensitivity to light","sensitivity to sound","dizziness"],
+info:"A type of headache that may be accompanied by nausea and sensitivity to light or sound.",
+tip:"Rest in a quiet environment and stay hydrated."
+},
+"Dehydration": {
+category:"General",
+symptoms:["thirst","dry mouth","dizziness","fatigue","headache","dark urine","weakness"],
+info:"Occurs when the body loses more fluid than it takes in.",
+tip:"Drink fluids regularly. Severe symptoms require medical attention."
+},
+"Anemia": {
+category:"Blood",
+symptoms:["fatigue","weakness","dizziness","shortness of breath","pale skin","headache","rapid heartbeat"],
+info:"A condition involving reduced healthy red blood cells or hemoglobin.",
+tip:"Persistent tiredness or weakness should be evaluated by a healthcare professional."
+},
+"Urinary Tract Infection": {
+category:"Urinary",
+symptoms:["painful urination","frequent urination","lower abdominal pain","cloudy urine","strong urine odor"],
+info:"An infection affecting part of the urinary system.",
+tip:"Urinary symptoms should be assessed by a healthcare professional."
+},
+"Back Pain": {
+category:"Musculoskeletal",
+symptoms:["back pain","lower back pain","muscle pain","stiffness","difficulty moving"],
+info:"Back pain can have many possible causes, including muscle strain.",
+tip:"Gentle movement may be appropriate when comfortable. Persistent pain should be assessed."
+},
+"Arthritis": {
+category:"Musculoskeletal",
+symptoms:["joint pain","joint stiffness","swelling","reduced movement","joint tenderness"],
+info:"A group of conditions that can cause joint pain, stiffness and swelling.",
+tip:"Gentle movement may help maintain mobility. Persistent symptoms should be evaluated."
+},
+"Insomnia": {
+category:"Sleep",
+symptoms:["difficulty sleeping","trouble staying asleep","daytime fatigue","difficulty concentrating","irritability"],
+info:"Difficulty falling asleep, staying asleep, or getting enough restorative sleep.",
+tip:"Keep a regular sleep schedule and reduce stimulating activities before bedtime."
+}
+};
+
+const aliases = {
+"head pain":"headache",
+"head hurts":"headache",
+"high temperature":"fever",
+"temperature":"fever",
+"backache":"back pain",
+"lower backache":"lower back pain",
+"stomach ache":"stomach pain",
+"belly pain":"stomach pain",
+"throwing up":"vomiting",
+"being sick":"vomiting",
+"loose motion":"diarrhea",
+"loose motions":"diarrhea",
+"breathlessness":"shortness of breath",
+"hard to breathe":"difficulty breathing",
+"can't breathe":"difficulty breathing",
+"cannot breathe":"difficulty breathing",
+"joint ache":"joint pain",
+"joint aches":"joint pain",
+"sore joints":"joint tenderness"
+};
+
+function extractSymptoms(text){
+text=text.toLowerCase();
+let found=[];
+
+for(const phrase in aliases){
+if(text.includes(phrase)){
+const symptom=aliases[phrase];
+if(!found.includes(symptom)) found.push(symptom);
+}
+}
+
+let allSymptoms=new Set();
+
+for(const disease in healthData){
+healthData[disease].symptoms.forEach(function(symptom){
+allSymptoms.add(symptom);
+});
+}
+
+Array.from(allSymptoms)
+.sort((a,b)=>b.length-a.length)
+.forEach(function(symptom){
+if(text.includes(symptom)&&!found.includes(symptom)){
+found.push(symptom);
+}
+});
+
+return found;
+}
+
+function analyzeSymptoms(){
+
+const text=document.getElementById("symptoms").value.toLowerCase().trim();
+const result=document.getElementById("result");
+
+if(!text){
+result.innerHTML=`
+<h2>Please enter your symptoms.</h2>
+<p class="small">Example: I have a headache and fever.</p>
+`;
+return;
+}
+
+const emergencyWords=[
+"severe chest pain",
+"severe difficulty breathing",
+"unconscious",
+"unconsciousness",
+"fainting",
+"severe bleeding"
+];
+
+for(const word of emergencyWords){
+if(text.includes(word)){
+result.innerHTML=`
+<h2>⚠️ URGENT MEDICAL ATTENTION</h2>
+<div class="notice">
+Your input contains a symptom that may require immediate professional medical care.
+<br><br>
+Please seek urgent medical attention.
+<br><br>
+Do not use this app for emergency diagnosis.
+</div>
+`;
+return;
+}
+}
+
+const symptoms=extractSymptoms(text);
+
+if(symptoms.length===0){
+result.innerHTML=`
+<h2>I couldn't identify a supported symptom.</h2>
+<p class="small">
+Try something like:<br><br>
+<b>headache and fever</b>
+<br><br>
+or<br><br>
+<b>I have back pain and stiffness.</b>
+</p>
+`;
+return;
+}
+
+let results=[];
+
+for(const disease in healthData){
+
+const data=healthData[disease];
+let matched=[];
+
+for(const symptom of symptoms){
+if(data.symptoms.includes(symptom)){
+matched.push(symptom);
+}
+}
+
+if(matched.length>0){
+
+const percentage=Math.round(
+(matched.length/symptoms.length)*100
+);
+
+results.push({
+disease:disease,
+category:data.category,
+matched:matched,
+percentage:percentage,
+info:data.info,
+tip:data.tip
+});
+}
+}
+
+results.sort((a,b)=>b.percentage-a.percentage);
+
+let html=`
+<h2>Possible Matches</h2>
+<p class="small">
+<b>Symptoms detected:</b> ${symptoms.join(", ")}
+</p>
+`;
+
+if(results.length>0){
+
+results.slice(0,6).forEach(function(item){
+
+html+=`
+<div class="match">
+
+<h3>${item.disease}</h3>
+
+<div class="meta">
+Category: ${item.category}
+</div>
+
+<div class="meta">
+Matched symptoms: ${item.matched.join(", ")}
+</div>
+
+<div class="bar">
+<div class="fill" style="width:${Math.min(item.percentage,100)}%"></div>
+</div>
+
+<div class="meta">
+Match: ${item.percentage}%
+</div>
+
+<p class="small">
+<b>Information:</b> ${item.info}
+</p>
+
+<p class="small">
+<b>Tip:</b> ${item.tip}
+</p>
+
+</div>
+`;
+});
+
+}else{
+
+html+=`
+<p class="small">
+No matching condition was found.
+</p>
+`;
+}
+
+html+=`
+<div class="notice">
+Note: These are educational symptom matches, not a medical diagnosis.
+</div>
+`;
+
+result.innerHTML=html;
+}
+
+function showTips(){
+
+const result=document.getElementById("result");
+const text=document.getElementById("symptoms").value.toLowerCase().trim();
+
+if(!text){
+
+result.innerHTML=`
+<h2>General Health Tips</h2>
+<p class="small">
+• Stay hydrated.<br><br>
+• Eat a balanced diet.<br><br>
+• Maintain a regular sleep schedule.<br><br>
+• Stay physically active when appropriate.<br><br>
+• Maintain good personal hygiene.<br><br>
+• Seek professional medical advice when needed.
+</p>
+`;
+return;
+}
+
+const symptoms=extractSymptoms(text);
+let tips=[];
+
+for(const disease in healthData){
+
+const data=healthData[disease];
+
+for(const symptom of symptoms){
+
+if(data.symptoms.includes(symptom)&&!tips.includes(data.tip)){
+tips.push(data.tip);
+}
+}
+}
+
+if(tips.length>0){
+
+let html="<h2>Health Tips</h2>";
+
+tips.slice(0,5).forEach(function(tip){
+
+html+=`
+<p class="small">
+• ${tip}
+</p>
+`;
+});
+
+html+=`
+<div class="notice">
+These are general educational suggestions.
+</div>
+`;
+
+result.innerHTML=html;
+
+}else{
+
+result.innerHTML=`
+<h2>Health Tips</h2>
+<p class="small">
+No specific tip was found.
+<br><br>
+Try entering a symptom first.
+</p>
+`;
+}
+}
+
+function showCategories(){
+
+const result=document.getElementById("result");
+let categories={};
+
+for(const disease in healthData){
+
+const category=healthData[disease].category;
+
+if(!categories[category]){
+categories[category]=[];
+}
+
+categories[category].push(disease);
+}
+
+let html="<h2>Health Categories</h2>";
+
+for(const category in categories){
+
+html+=`
+<p class="small">
+<b>${category}</b><br>
+${categories[category].map(disease=>"• "+disease).join("<br>")}
+</p>
+`;
+}
+
+result.innerHTML=html;
+}
+
+function clearApp(){
+
+document.getElementById("symptoms").value="";
+
+document.getElementById("result").innerHTML=`
+<h2>Welcome to HealthAI</h2>
+<p class="small">
+Enter one or more symptoms above to explore
+educational health information.
+</p>
+`;
+}
+
+</script>
